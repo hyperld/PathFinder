@@ -1,50 +1,80 @@
-# Welcome to your Expo app 👋
+# PathFinder
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native (Expo) mobile application for tracking physical movements in real-time, saving routes, and reviewing past activities.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Real-Time Map** -- Full-screen Apple Maps integration via `react-native-maps`, showing the user's live location with automatic centering on launch.
+- **Activity Tracking** -- Start/Stop button with a 3D flip animation. Records GPS coordinates in real-time, draws a polyline on the map, and displays live duration and estimated distance in the header.
+- **Persistence** -- Saves recordings (date, distance, duration, coordinate array) locally via AsyncStorage through Zustand's persist middleware.
+- **History** -- Lists all past recordings with date, distance, and duration. Swipe any card right to reveal a delete action, or use "Clear All" to wipe everything.
+- **Favourite Routes** -- Star any recording from the History screen to bookmark it. Favourited routes are accessible from the main map screen via a dedicated button.
+- **Detail View** -- Tap any recording to view the full route rendered on a map with start/end markers and stats.
+- **Recenter** -- A locate button below the header snaps the map back to the user's current position.
+
+## Tech Stack
+
+| Layer            | Technology                                |
+| ---------------- | ----------------------------------------- |
+| Framework        | Expo (Managed Workflow, Expo Go)          |
+| Navigation       | Expo Router (stack-based)                 |
+| Maps             | react-native-maps (Apple Maps on iOS)     |
+| Location         | expo-location (foreground GPS tracking)   |
+| State Management | Zustand with AsyncStorage persistence     |
+| Animations       | react-native-reanimated                   |
+| Gestures         | react-native-gesture-handler (Swipeable)  |
+| Icons            | @expo/vector-icons (Ionicons)             |
+
+## Project Structure
+
+```
+app/
+  _layout.tsx            Root stack navigator
+  index.tsx              Main map screen
+  history.tsx            Recording history list
+  favourites.tsx         Starred recordings
+  detail/[id].tsx        Route detail view
+
+components/
+  map/
+    Header.tsx           Top bar with live stats
+    TrackingButton.tsx   Start/Stop with flip animation
+    NavButton.tsx        Circular icon button
+  history/
+    RecordingCard.tsx    Swipeable recording list item
+
+store/
+  tracking-store.ts      Live session state
+  recordings-store.ts    Persisted recordings
+
+hooks/
+  use-location-tracking.ts   GPS subscription
+  use-timer.ts               Duration counter
+
+utils/
+  distance.ts            Haversine formula
+  format.ts              Duration and distance formatting
+
+types/
+  recording.ts           TypeScript interfaces
+```
+
+## Getting Started
+
+1. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Start the development server:
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+3. Open the app in Expo Go on your iOS device by scanning the QR code.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Permissions
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+The app requests foreground location access to track your position. On iOS this is handled via the `NSLocationWhenInUseUsageDescription` key in `app.json`.
