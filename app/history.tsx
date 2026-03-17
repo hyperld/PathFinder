@@ -9,6 +9,8 @@ export default function HistoryScreen() {
   const { recordings, toggleFavourite, deleteRecording, clearAllRecordings } =
     useRecordingsStore();
 
+  const historyItems = recordings.filter((r) => !r.isFavourite);
+
   const handleClearAll = () => {
     Alert.alert(
       "Clear All",
@@ -24,7 +26,7 @@ export default function HistoryScreen() {
     );
   };
 
-  if (recordings.length === 0) {
+  if (historyItems.length === 0) {
     return (
       <View style={styles.emptyContainer}>
         <Ionicons name="footsteps-outline" size={64} color="#334155" />
@@ -40,7 +42,7 @@ export default function HistoryScreen() {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.countText}>
-          {recordings.length} recording{recordings.length !== 1 ? "s" : ""}
+          {historyItems.length} recording{historyItems.length !== 1 ? "s" : ""}
         </Text>
         <Pressable onPress={handleClearAll} style={styles.clearBtn}>
           <Ionicons name="trash-outline" size={16} color="#EF4444" />
@@ -49,7 +51,7 @@ export default function HistoryScreen() {
       </View>
 
       <FlatList
-        data={recordings}
+        data={historyItems}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingBottom: 32 }}
         renderItem={({ item }) => (

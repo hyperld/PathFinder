@@ -1,18 +1,18 @@
-import { useRef, useCallback, useEffect } from "react";
-import { View, Alert, Pressable, StyleSheet } from "react-native";
-import MapView, { Polyline, PROVIDER_DEFAULT } from "react-native-maps";
-import { useRouter } from "expo-router";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useCallback, useEffect, useRef } from "react";
+import { Alert, Pressable, StyleSheet, View } from "react-native";
+import MapView, { Polyline, PROVIDER_DEFAULT } from "react-native-maps";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Header } from "@/components/map/Header";
-import { TrackingButton } from "@/components/map/TrackingButton";
 import { NavButton } from "@/components/map/NavButton";
+import { TrackingButton } from "@/components/map/TrackingButton";
 
-import { useTrackingStore } from "@/store/tracking-store";
-import { useRecordingsStore } from "@/store/recordings-store";
 import { useLocationTracking } from "@/hooks/use-location-tracking";
 import { useTimer } from "@/hooks/use-timer";
+import { useRecordingsStore } from "@/store/recordings-store";
+import { useTrackingStore } from "@/store/tracking-store";
 
 const DELTA = 0.003;
 const TRACKING_DELTA = 0.0015;
@@ -88,9 +88,17 @@ export default function MapScreen() {
         return;
       }
 
+      const now = new Date();
       saveRecording({
-        id: Date.now().toString(),
-        date: new Date().toISOString(),
+        id: now.getTime().toString(),
+        name: `Route ${now.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        })} ${now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}`,
+        date: now.toISOString(),
         distance: state.distance,
         duration: state.duration,
         coordinates: state.coordinates,

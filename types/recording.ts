@@ -6,6 +6,7 @@ export interface Coordinate {
 
 export interface Recording {
   id: string;
+  name: string;
   date: string;
   distance: number;
   duration: number;

@@ -71,6 +71,7 @@ export function RecordingCard({
           </View>
 
           <View style={styles.content}>
+            <Text style={styles.name}>{recording.name || "Unnamed Route"}</Text>
             <Text style={styles.date}>{formattedDate}</Text>
             <Text style={styles.time}>{formattedTime}</Text>
             <View style={styles.statsRow}>
@@ -149,10 +150,15 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 4,
   },
-  date: {
+  name: {
     color: "#fff",
     fontWeight: "700",
     fontSize: 16,
+  },
+  date: {
+    color: "#CBD5E1",
+    fontWeight: "600",
+    fontSize: 13,
   },
   time: {
     color: "#9CA3AF",
