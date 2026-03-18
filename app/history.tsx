@@ -1,7 +1,7 @@
 import { View, Text, FlatList, Pressable, Alert, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useRecordingsStore } from "@/store/recordings-store";
-import { RecordingCard } from "@/components/history/RecordingCard";
+import { RecordingCard } from "@/components/recordings/RecordingCard";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function HistoryScreen() {

@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
-import MapView, { Polyline, Marker, PROVIDER_DEFAULT } from "react-native-maps";
-import { useLocalSearchParams } from "expo-router";
 import { useRecordingsStore } from "@/store/recordings-store";
-import { formatDuration, formatDistance } from "@/utils/format";
+import { formatDistance, formatDuration } from "@/utils/format";
 import { Ionicons } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
+import { useEffect, useRef, useState } from "react";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from "react-native-maps";
 
 export default function DetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -167,13 +167,6 @@ export default function DetailScreen() {
               {formatDuration(recording.duration)}
             </Text>
             <Text style={styles.statLabel}>Duration</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Ionicons name="location-outline" size={22} color="#10B981" />
-            <Text style={styles.statValue}>
-              {recording.coordinates.length}
-            </Text>
-            <Text style={styles.statLabel}>Points</Text>
           </View>
         </View>
       </View>

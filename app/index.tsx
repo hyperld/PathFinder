@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useCallback, useEffect, useRef } from "react";
-import { Alert, Pressable, StyleSheet, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import MapView, { Polyline, PROVIDER_DEFAULT } from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -37,6 +37,8 @@ export default function MapScreen() {
     startTracking: locationStart,
     stopTracking: locationStop,
     currentLocation,
+    permissionStatus,
+    requestPermission,
   } = useLocationTracking();
 
   useTimer();
@@ -143,7 +145,6 @@ export default function MapScreen() {
         followsUserLocation={isTracking}
         showsMyLocationButton={false}
         showsCompass={false}
-        legalLabelInsets={{ bottom: 8, left: 8, right: 0, top: 0 }}
       >
         {coordinates.length >= 2 && (
           <Polyline
@@ -176,6 +177,32 @@ export default function MapScreen() {
 
         <NavButton icon="time" onPress={() => router.push("/history")} />
       </View>
+
+      {permissionStatus === "denied" && (
+        <View style={styles.permissionOverlay}>
+          <View style={styles.permissionCard}>
+            <View style={styles.permissionIconWrap}>
+              <Ionicons name="location-outline" size={48} color="#2563EB" />
+            </View>
+            <Text style={styles.permissionTitle}>
+              Location Access Required
+            </Text>
+            <Text style={styles.permissionBody}>
+              PathFinder needs access to your location to track your routes in
+              real-time.
+            </Text>
+            <Pressable
+              style={styles.permissionBtn}
+              onPress={requestPermission}
+            >
+              <Ionicons name="navigate" size={18} color="#fff" />
+              <Text style={styles.permissionBtnText}>
+                Allow Location Access
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -210,5 +237,55 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "space-between",
+  },
+  permissionOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(15, 23, 42, 0.95)",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 100,
+  },
+  permissionCard: {
+    backgroundColor: "#1E293B",
+    borderRadius: 24,
+    padding: 32,
+    marginHorizontal: 32,
+    alignItems: "center",
+    gap: 16,
+  },
+  permissionIconWrap: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "rgba(37, 99, 235, 0.15)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  permissionTitle: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  permissionBody: {
+    color: "#9CA3AF",
+    fontSize: 15,
+    textAlign: "center",
+    lineHeight: 22,
+  },
+  permissionBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: "#2563EB",
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 14,
+    marginTop: 8,
+  },
+  permissionBtnText: {
+    color: "#fff",
+    fontWeight: "700",
+    fontSize: 16,
   },
 });

@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTrackingStore } from "@/store/tracking-store";
-import { formatDuration, formatDistance } from "@/utils/format";
+import { formatDistance, formatDuration } from "@/utils/format";
 import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function Header() {
   const insets = useSafeAreaInsets();
