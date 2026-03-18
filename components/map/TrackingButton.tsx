@@ -45,12 +45,12 @@ export function TrackingButton({ isTracking, onPress }: TrackingButtonProps) {
   return (
     <Pressable onPress={handlePress} style={styles.pressable}>
       <Animated.View style={[styles.face, styles.frontFace, frontStyle]}>
-        <Ionicons name="play-circle" size={24} color="white" />
+        <Ionicons name="play-circle" size={24} color="#fff" />
         <Text style={styles.label}>Start Tracking</Text>
       </Animated.View>
 
       <Animated.View style={[styles.face, styles.backFace, backStyle]}>
-        <Ionicons name="stop-circle" size={24} color="white" />
+        <Ionicons name="stop-circle" size={24} color="#fff" />
         <Text style={styles.label}>Stop & Save</Text>
       </Animated.View>
     </Pressable>

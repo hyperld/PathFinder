@@ -9,7 +9,7 @@ interface NavButtonProps {
 export function NavButton({ icon, onPress }: NavButtonProps) {
   return (
     <Pressable onPress={onPress} style={styles.button}>
-      <Ionicons name={icon} size={26} color="white" />
+      <Ionicons name={icon} size={26} color="#fff" />
     </Pressable>
   );
 }

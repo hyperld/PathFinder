@@ -19,11 +19,3 @@ export function haversine(a: Coordinate, b: Coordinate): number {
 
   return 2 * EARTH_RADIUS_M * Math.asin(Math.sqrt(h));
 }
-
-export function totalDistance(coords: Coordinate[]): number {
-  let sum = 0;
-  for (let i = 1; i < coords.length; i++) {
-    sum += haversine(coords[i - 1], coords[i]);
-  }
-  return sum;
-}
