@@ -23,7 +23,7 @@ export function Header() {
               <Text style={styles.statText}>{formatDuration(duration)}</Text>
             </View>
             <View style={styles.stat}>
-              <Ionicons name="footsteps-outline" size={16} color="#10B981" />
+              <Ionicons name="navigate-outline" size={16} color="#10B981" />
               <Text style={styles.statText}>{formatDistance(distance)}</Text>
             </View>
           </View>

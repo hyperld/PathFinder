@@ -76,7 +76,7 @@ export function RecordingCard({
             <Text style={styles.time}>{formattedTime}</Text>
             <View style={styles.statsRow}>
               <View style={styles.stat}>
-                <Ionicons name="footsteps-outline" size={14} color="#10B981" />
+                <Ionicons name="navigate-outline" size={14} color="#10B981" />
                 <Text style={styles.statText}>
                   {formatDistance(recording.distance)}
                 </Text>

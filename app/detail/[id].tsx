@@ -3,7 +3,15 @@ import { formatDistance, formatDuration } from "@/utils/format";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Keyboard,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from "react-native-maps";
 
 export default function DetailScreen() {
@@ -40,6 +48,27 @@ export default function DetailScreen() {
       setDraftName(recording.name || "Unnamed Route");
     }
   }, [recording]);
+
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
+
+  useEffect(() => {
+    const showEvent =
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent =
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+    const showSub = Keyboard.addListener(showEvent, (e) => {
+      setKeyboardOffset(e.endCoordinates.height);
+    });
+    const hideSub = Keyboard.addListener(hideEvent, () => {
+      setKeyboardOffset(0);
+    });
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   if (!recording) {
     return (
@@ -100,7 +129,11 @@ export default function DetailScreen() {
         />
       </MapView>
 
-      <View style={styles.infoCard}>
+      {keyboardOffset > 0 && (
+        <View style={[styles.keyboardFill, { height: keyboardOffset }]} />
+      )}
+
+      <View style={[styles.infoCard, keyboardOffset > 0 && { bottom: keyboardOffset }]}>
         {!isEditingName ? (
           <View style={styles.nameRow}>
             <Text style={styles.routeName}>{recording.name || "Unnamed Route"}</Text>
@@ -155,7 +188,7 @@ export default function DetailScreen() {
 
         <View style={styles.statsRow}>
           <View style={styles.statItem}>
-            <Ionicons name="footsteps-outline" size={22} color="#10B981" />
+            <Ionicons name="navigate-outline" size={22} color="#10B981" />
             <Text style={styles.statValue}>
               {formatDistance(recording.distance)}
             </Text>
@@ -192,6 +225,14 @@ const styles = StyleSheet.create({
     color: "#6B7280",
     fontSize: 16,
   },
+  keyboardFill: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#1E293B",
+    zIndex: 9,
+  },
   infoCard: {
     position: "absolute",
     bottom: 0,
@@ -202,6 +243,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     paddingHorizontal: 24,
     paddingVertical: 20,
+    zIndex: 10,
   },
   nameRow: {
     flexDirection: "row",
